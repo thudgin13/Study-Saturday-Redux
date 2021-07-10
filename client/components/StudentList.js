@@ -25,6 +25,7 @@ class StudentList extends React.Component {
             <div>
               <p>Name: {student.fullName}</p>
               <p>Email: {student.email}</p>
+              <Link to={`/students/${student.id}`}> Link to student record </Link>
             </div>
           </li>
         ))}

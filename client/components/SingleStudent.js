@@ -1,4 +1,6 @@
 import React from 'react';
+import { fetchOneStudent } from '../redux/store'
+import { connect } from 'react-redux'
 
 const avgGrade = (tests) => {
   return Math.round(
@@ -9,6 +11,9 @@ const avgGrade = (tests) => {
 class SingleStudent extends React.Component {
   constructor(props) {
     super(props);
+  }
+  componentDidMount() {
+    this.props.loadOneStudent(this.props.match.params.id)
   }
 
   render() {
@@ -49,5 +54,10 @@ class SingleStudent extends React.Component {
     );
   }
 };
-
-export default SingleStudent;
+const mapStateToProps = (state) => ({
+  student: state.student
+})
+const mapDispatchToProps = (dispatch) => ({
+  loadOneStudent: (id) => dispatch(fetchOneStudent(id))
+})
+export default connect(mapStateToProps, mapDispatchToProps)(SingleStudent);
