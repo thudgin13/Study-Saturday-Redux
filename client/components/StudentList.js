@@ -1,36 +1,31 @@
 import React from 'react';
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
+//import connect to connect it to the store
+import { connect } from 'react-redux'
+//import our thunk from the store
+import { fetchStudents } from '../redux/store'
 
-const DUMMY_DATA = [
-  {
-    id: 1,
-    fullName: "Jordan Walke",
-    firstName: "Jordan",
-    lastName: "Walke",
-    email: "jw@react.com",
-  },
-  {
-    id: 2,
-    fullName: "Dan Abramov",
-    firstName: "Dan",
-    lastName: "Avramov",
-    email: "da@react.com",
-  }
-]
 
 class StudentList extends React.Component {
   constructor(props) {
     super(props);
   }
+  componentDidMount() {
+    //loadStudents is the thunk that we mapped in via mapDispatchToProps below
+    this.props.loadStudents()
+  }
 
   render() {
+
+    //going to mapStateToProps via props and mapping through students array
     return (
       <ul>
-        {DUMMY_DATA.map((student) => (
+        {this.props.students.map((student) => (
           <li key={student.id}>
             <div>
               <p>Name: {student.fullName}</p>
               <p>Email: {student.email}</p>
+              <Link to={`/students/${student.id}`}> Link to student record </Link>
             </div>
           </li>
         ))}
@@ -39,5 +34,19 @@ class StudentList extends React.Component {
 
   }
 }
+/*Mapping the initial state object from the store to this component.
+We only need students so state.students*/
+const mapStateToProps = (state) => {
+  return {
+    students: state.students
+  }
+}
+/*Mapping the thunk that we need to dispatch the action 
+to update state in the reducer. We label the function anything we want */
+const mapDispatchToProps = (dispatch) => ({
+  loadStudents: () => dispatch(fetchStudents())
+})
 
-export default StudentList;
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(StudentList);
