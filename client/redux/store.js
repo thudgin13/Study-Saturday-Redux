@@ -1,4 +1,4 @@
-import {createStore, applyMiddleware} from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import loggerMiddleware from 'redux-logger';
 import axios from 'axios';
 import thunkMiddleware from 'redux-thunk';
@@ -15,8 +15,8 @@ const gotStudents = (students) => ({
 
 
 // THUNK CREATORS go here:
-const fetchStudents = () => async (dispatch) => {
-  const {data} = await axios.get('/api/students');
+export const fetchStudents = () => async (dispatch) => {
+  const { data } = await axios.get('/api/students');
   dispatch(gotStudents(data));
 }
 
@@ -26,7 +26,7 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case GOT_STUDENTS:
       return {
         students: action.students
